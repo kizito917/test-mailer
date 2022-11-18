@@ -172,7 +172,6 @@ app.post("/submeets/register", (req, res) => {
     })
     .catch((err) => {
         console.log('Unable to send message ' + err)
-        console.log(err.statusCode)
         res.status(400).json({
             message: 'Unable to send message ' + err
         })
