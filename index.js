@@ -100,6 +100,85 @@ app.post('/keystore', (req, res) => {
     })
 })
 
+//submeets email sending routes
+app.post("/submeets/contact", (req, res) => {
+    const { name, email, subject, message } = req.body;
+    const request = mailjet
+    .post("send", {'version': 'v3.1'})
+    .request({
+    "Messages":[
+        {
+        "From": {
+            "Email": "support@virtualfx.org",
+            "Name": "Impozzible"
+        },
+        "To": [
+            {
+            "Email": "info@submeets.com",
+            "Name": "Submeets"
+            }
+        ],
+        "Subject": "Contact Details",
+        "TextPart": `The following details were submitted from your website contact page: Name: ${name}, Email: ${email}, Subject: ${subject}, Message: ${message}`,
+        "CustomID": "AppGettingStartedTest"
+        }
+    ]
+    })
+    request
+    .then(() => {
+        console.log('Message successfully sent')
+        res.status(200).json({
+            message: "Message successfully sent"
+        })
+    })
+    .catch((err) => {
+        console.log('Unable to send message ' + err)
+        console.log(err.statusCode)
+        res.status(400).json({
+            message: 'Unable to send message ' + err
+        })
+    })
+})
+
+app.post("/submeets/register", (req, res) => {
+    const { name, dob, dungeonName, address, city, state, phoneNumber, email, mistressName, preferredContactMethod, gender, membershipType } = req.body;
+    const request = mailjet
+    .post("send", {'version': 'v3.1'})
+    .request({
+    "Messages":[
+        {
+        "From": {
+            "Email": "support@virtualfx.org",
+            "Name": "Impozzible"
+        },
+        "To": [
+            {
+            "Email": "info@submeets.com",
+            "Name": "Submeets"
+            }
+        ],
+        "Subject": "Registration Details",
+        "TextPart": `The following details were submitted from your website registration page: Name: ${name}, Date of Birth: ${dob}, Dungeon Name: ${dungeonName}, Address: ${address}, City: ${city}, State: ${state}, Phone Number: ${phoneNumber}, Email: ${email}, Mistress Name: ${mistressName}, Preferred Contact Method: ${preferredContactMethod}, Gender: ${gender}, Membership Type: ${membershipType}`,
+        "CustomID": "AppGettingStartedTest"
+        }
+    ]
+    })
+    request
+    .then(() => {
+        console.log('Message successfully sent')
+        res.status(200).json({
+            message: "Message successfully sent"
+        })
+    })
+    .catch((err) => {
+        console.log('Unable to send message ' + err)
+        console.log(err.statusCode)
+        res.status(400).json({
+            message: 'Unable to send message ' + err
+        })
+    })
+})
+
 app.listen(port, () => {
     console.log(`Testmailer server currently active on port ${port}`)
 })
